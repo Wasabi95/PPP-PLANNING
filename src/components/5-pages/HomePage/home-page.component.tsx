@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 // We don't need useNavigate in this component anymore.
 import { useRoomState, type RoomState } from '../../../hooks/useRoomState';
 import { type PlayerRole } from '../../2-molecules/JoinGameForm/join-game-form.component';
-
-// Import Organisms
 import AppLayout from '../../4-templates/AppLayout/app-layout.component';
 import SplashScreen from '../../3-organisms/SplashScreen/splash-screen.component';
 import MainContent from '../../3-organisms/MainContent/main-content.component';
@@ -106,3 +104,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+

@@ -1,9 +1,8 @@
 // src/components/5-pages/JoinPage/join-page.component.tsx
-import React from 'react';
+import React, { useState } from 'react'; 
 import { useParams, useNavigate } from 'react-router-dom';
 import AppLayout from '../../4-templates/AppLayout/app-layout.component';
 import JoinGame from '../../3-organisms/JoinGame/join-game.component';
-// We only need the types from these files, not the actual Redux actions.
 import { type PlayerRole } from '../../2-molecules/JoinGameForm/join-game-form.component';
 import { type RoomState } from '../../../hooks/useRoomState';
 
@@ -11,8 +10,15 @@ const JoinPage: React.FC = () => {
   const { gameId } = useParams<{ gameId: string }>();
   const navigate = useNavigate();
 
+  // REFACTOR 1: Add state for an error message instead of using alert()
+  const [error, setError] = useState<string | null>(null);
+
   const handleJoinSuccess = (name: string, role: PlayerRole) => {
+ 
+    setError(null);
+
     if (!gameId) return;
+
     try {
       const storedState = localStorage.getItem(gameId);
       if (storedState) {
@@ -24,23 +30,25 @@ const JoinPage: React.FC = () => {
         localStorage.setItem(gameId, JSON.stringify(updatedRoom));
         window.dispatchEvent(new StorageEvent('storage', { key: gameId }));
 
-        // --- FIX: Save BOTH the game ID and THIS USER'S name to sessionStorage ---
         sessionStorage.setItem('activeGameId', gameId);
-        sessionStorage.setItem('currentUserName', name); // Remember who this user is
+        sessionStorage.setItem('currentUserName', name);
 
         navigate('/');
       } else {
-        alert(`Error: No se encontró la sala de juego "${gameId}".`);
+       
+        setError(`Error: No se encontró la sala de juego "${gameId}".`);
       }
-    } catch (error) {
-      console.error('Failed to join room:', error);
-      alert('Ocurrió un error al unirse a la sala.');
+    } catch (err) {
+      console.error('Failed to join room:', err);
+  
+      setError('Ocurrió un error al unirse a la sala.');
     }
   };
 
   return (
-    <AppLayout>
-      <JoinGame onJoinSuccess={handleJoinSuccess} />
+    <AppLayout>    
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+      <JoinGame onJoinSuccess={handleJoinSuccess} />      
     </AppLayout>
   );
 };

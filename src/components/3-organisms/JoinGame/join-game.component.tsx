@@ -47,3 +47,4 @@ const JoinGame: React.FC<JoinGameProps> = ({ onJoinSuccess }) => {
 };
 
 export default JoinGame;
+

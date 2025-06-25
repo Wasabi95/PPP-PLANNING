@@ -1,37 +1,66 @@
 // src/components/2-molecules/PlayerSeat/player-seat.component.scss
-
 .player-seat {
   display: flex;
   flex-direction: column;
   align-items: center;
- 
- 
 
   &__name {
     color: white;
     font-size: 10px;
   }
 }
+
 .card-placeholder {
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  
-  // ADDED: Style for when the player has voted
-  &--has-voted {
-    background-color: #8c52ff; // Light purple
-    border-color: #c4a7ff;
+  width: 30px;
+  height: 50px;
+  border: 1.5px solid rgba(122, 42, 226, 0.5);
+  border-radius: 6px; // Matched to revealed card for consistency
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+
+  // This modifier class is added when a non-current user has voted
+  &--voted {
+    border-color: rgba(173, 112, 255, 0.8); // Make border more prominent on vote
+
+    // This inner div creates the semi-transparent overlay
+    .card-placeholder__vote-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(173, 112, 255, 0.5);
+    }
   }
 }
-// ✅ ADD THESE STYLES
-.player-seat__revealed-vote {
+
+// These styles remain as they are for the reveal phase
+.player-seat__revealed-card {
+  width: 40px;
+  height: 60px;  
+  border: 1px solid rgba(173, 112, 255, 0.6);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-size: 2.5rem;
-  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.player-seat__revealed-vote {
   color: #ffffff;
-  background-color: #4a5568; // A neutral background for the revealed card
-  border: 2px solid #a0aec0;
-  border-radius: 50%; // Keep the circular shape
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.player-seat__card-area {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  height: 60px; 
+}
+.player-seat--voting .player-seat__revealed-card {
+  display: none !important;
+  border: none !important; // Kills the border
 }

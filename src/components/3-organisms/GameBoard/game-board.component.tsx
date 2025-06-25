@@ -1,5 +1,5 @@
 // // src/components/3-organisms/GameBoard/game-board.component.tsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { type PlayerRole } from '../../2-molecules/JoinGameForm/join-game-form.component';
 import PragmaLogo from '../../2-molecules/PragmaLogo/pragma-logo.component';
 import PlayerSeat from '../../2-molecules/PlayerSeat/player-seat.component';
@@ -10,16 +10,15 @@ import InvitePlayers from '../../2-molecules/InvitePlayers/invite-players.compon
 import CardDeck from '../../2-molecules/CardDeck/card-deck.component';
 import VoteCounterLoader from '../../2-molecules/VoteCounterLoader/vote-counter-loader.component';
 import VoteResults from '../../2-molecules/VoteResults/vote-results.component';
-
 import {
   useRoomState,
   type CardValue,
   type RoomState,
 } from '../../../hooks/useRoomState';
-
 import './game-board.component.scss';
 
-// This interface will now work because PlayerRole is imported
+// --- TYPE AND INTERFACE DEFINITIONS ---
+
 interface Player {
   name: string;
   role: PlayerRole;
@@ -31,6 +30,9 @@ interface GameBoardProps {
   gameName: string;
 }
 
+// ✅ The GamePhase type is defined here at the top level
+type GamePhase = 'VOTING' | 'REVEALING' | 'REVEALED';
+
 const getInitials = (name: string): string => {
   if (!name || typeof name !== 'string') return '';
   const names = name.trim().toUpperCase().split(' ');
@@ -39,30 +41,27 @@ const getInitials = (name: string): string => {
 };
 
 const SEAT_POSITIONS = [
-  // Top Row (3 seats)
-  { x: -140, y: -155 }, // Top-left
-  { x: 0,    y: -155 }, // Top-center
-  { x: 120,  y: -155 }, // Top-right
-
-  // Middle Row (2 seats) - Left and Right
-  { x: 330, y: 30 },  // Far right
-  { x: -330, y: 30 }, // Far left
-  
-  // Bottom Row (2 seats, closer to the current user)
-  { x: 130, y: 160 },  // Bottom-right
-  { x: -140, y: 160 }, // Bottom-left
+  { x: -140, y: -155 }, { x: 0, y: -155 }, { x: 120, y: -155 },
+  { x: 330, y: 30 }, { x: -330, y: 30 },
+  { x: 130, y: 160 }, { x: -140, y: 160 },
 ];
 
-
 const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
-  // ... (the rest of your component logic is perfect and does not need to change)
+  // --- STATE AND HOOKS ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [roomState, setRoomState] = useRoomState(gameName);
-  type GamePhase = 'VOTING' | 'REVEALING' | 'REVEALED';
   const [gamePhase, setGamePhase] = useState<GamePhase>('VOTING');
+  
 
+  // ✅ The useEffect hook is correctly placed inside the component
+  useEffect(() => {
+    // This is useful for checking the state if you need to debug again
+    // console.log('Room state was updated:', roomState);
+  }, [roomState]);
+
+
+  // --- MEMOIZED CALCULATIONS ---
   const voteResults = useMemo(() => {
-    // ...
     if (gamePhase !== 'REVEALED' || !roomState) {
       return { voteCounts: {}, average: '0,0' };
     }
@@ -80,15 +79,14 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
     }, {} as Record<string, number>);
     const average =
       numericVotes.length > 0
-        ? (
-            numericVotes.reduce((a, b) => a + b, 0) / numericVotes.length
-          ).toFixed(1)
+        ? (numericVotes.reduce((a, b) => a + b, 0) / numericVotes.length).toFixed(1)
         : '0.0';
     return { voteCounts, average: average.replace('.', ',') };
   }, [gamePhase, roomState]);
 
+
+  // --- HANDLER FUNCTIONS ---
   const handleCardSelect = (value: CardValue) => {
-    // ...
     if (!roomState || !player) return;
     const updatedPlayers = roomState.players.map((p) =>
       p.name === player.name ? { ...p, vote: value } : p
@@ -98,7 +96,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
   };
 
   const handleRevealVotes = () => {
-    // ...
     setGamePhase('REVEALING');
     setTimeout(() => {
       setGamePhase('REVEALED');
@@ -106,40 +103,39 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
   };
 
   const handleNewVote = () => {
-    // ...
-    if (!roomState) return;
-    const playersWithClearedVotes = roomState.players.map(
-      ({ vote: _vote, ...player }) => player
-    );
-    const updatedRoom: RoomState = { ...roomState, players: playersWithClearedVotes };
+    if (!roomState) return;    
+   
+    const playersWithClearedVotes = roomState.players.map((p) => ({
+      name: p.name,
+      role: p.role,
+    }));
+
+    const updatedRoom: RoomState = {
+      ...roomState,
+      players: playersWithClearedVotes,
+    };
+    
     setRoomState(updatedRoom);
     setGamePhase('VOTING');
   };
 
 
+  // --- RENDER LOGIC ---
   if (!roomState || !player) {
     return <div className="game-board">Cargando sala...</div>;
   }
 
-  const isHost =
-    player &&
-    roomState.players.length > 0 &&
-    roomState.players[0].name === player.name;
+  const isHost = player && roomState.players.length > 0 && roomState.players[0].name === player.name;
   const canRevealVotes = isHost && roomState.players.length >= 2;
-
   const currentUser = player;
-  const currentUserInRoom = roomState.players.find(
-    (p) => p.name === currentUser.name
-  );
+  const currentUserInRoom = roomState.players.find((p) => p.name === currentUser.name);
   const currentUserVote = currentUserInRoom?.vote;
-
   const boardClassName = `game-board ${isModalOpen ? 'blurred' : ''}`;
 
   return (
     <>
       <div className={boardClassName}>
         <header className="game-board__header">
-          {/* ... (header content is unchanged) ... */}
           <PragmaLogo showText={false} iconSize={48} />
           <h1 className="game-board__title">{roomState.gameName}</h1>
           <div className="game-board__header-right">
@@ -152,7 +148,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
 
         <main className="game-board__main-content">
           <div className="game-board__poker-table">
-            {/* ... (poker table content is unchanged) ... */}
             {gamePhase === 'VOTING' && canRevealVotes && (
               <Button variant="cta" onClick={handleRevealVotes}>
                 Revelar cartas
@@ -172,39 +167,31 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
 
             return (
               <>
-                {/* Current user rendering (no change here) */}
                 {currentUserData && (
-                  <div
-                    key={currentUserData.name}
-                    className="player-seat-wrapper player-seat-wrapper--current-user"
-                  >
+                  <div key={currentUserData.name} className="player-seat-wrapper player-seat-wrapper--current-user">
                     <PlayerSeat
                       name={currentUserData.name}
                       initials={getInitials(currentUserData.name)}
                       isCurrentUser={true}
                       hasVoted={!!currentUserData.vote}
+                      vote={currentUserData.vote}
+                      phase={gamePhase}
                     />
                   </div>
                 )}
-
-                {/* Other players are now mapped to the fixed SEAT_POSITIONS */}
                 {otherPlayers.map((p, index) => {
                   const position = SEAT_POSITIONS[index];
-                  if (!position) return null; // Don't render if we run out of seats
-                  
+                  if (!position) return null;
                   const { x, y } = position;
-
                   return (
-                    <div
-                      key={p.name}
-                      className="player-seat-wrapper"
-                      style={{ '--x': `${x}px`, '--y': `${y}px` } as React.CSSProperties}
-                    >
+                    <div key={p.name} className="player-seat-wrapper" style={{ '--x': `${x}px`, '--y': `${y}px` } as React.CSSProperties}>
                       <PlayerSeat
                         name={p.name}
                         initials={getInitials(p.name)}
                         isCurrentUser={false}
                         hasVoted={!!p.vote}
+                        vote={p.vote}
+                        phase={gamePhase}
                       />
                     </div>
                   );
@@ -212,11 +199,9 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
               </>
             );
           })()}
-          {/* --- END OF PLAYER RENDERING --- */}
         </main>
 
         <footer className="game-board__footer">
-          {/* ... (footer content is unchanged) ... */}
           {gamePhase === 'VOTING' && (
             <CardDeck
               onCardSelect={handleCardSelect}
@@ -232,11 +217,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
         </footer>
       </div>
 
-      <Modal
-        title="Invitar jugadores"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
+      <Modal title="Invitar jugadores" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <InvitePlayers gameId={gameName} />
       </Modal>
     </>
@@ -244,4 +225,5 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
 };
 
 export default GameBoard;
+
 

@@ -1,4 +1,4 @@
-// src/components/2-molecules/InvitePlayers/invite-players.component.tsx
+///src/components/2-molecules/InvitePlayers/invite-players.component.tsx
 import React, { useState } from 'react';
 import Button from '../../1-atoms/Button/button.component';
 import './invite-players.component.scss';
@@ -40,3 +40,5 @@ const InvitePlayers: React.FC<InvitePlayersProps> = ({ gameId }) => {
 };
 
 export default InvitePlayers;
+
+

@@ -49,26 +49,42 @@
 }
 
 // --- Poker Table ---
+// --- Poker Table ---
 .game-board__poker-table {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 90vw;
-height: 16vw;
-max-width: 540px;
-max-height: 341px;
-border: 3px solid rgba(173, 112, 255, 0.4);
-border-radius: 250px;
-box-shadow: 0 0 20px 5px rgba(173, 112, 255, 0.2);
-display: flex;
-justify-content: center;
-align-items: center;
+  // ===========================================
+  // == YOUR ORIGINAL DESKTOP VALUES RESTORED ==
+  // ===========================================
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  height: 16vw;         // ✅ YOUR ORIGINAL, SMALLER HEIGHT
+  max-width: 540px;     // ✅ YOUR ORIGINAL MAX-WIDTH
+  max-height: 341px;    // ✅ YOUR ORIGINAL MAX-HEIGHT
+  border: 3px solid rgba(173, 112, 255, 0.4);
+  border-radius: 250px;
+  box-shadow: 0 0 20px 5px rgba(173, 112, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  // Your original inner ring styles (unchanged)
   > * { z-index: 1; }
   &::before, &::after { content: ''; position: absolute; z-index: 0; }
   &::before { inset: 15px; border: 2px solid rgba(222, 207, 255, 0.6); border-radius: 235px; }
   &::after { inset: 23px; border: 1px solid rgba(222, 207, 255, 0.4); border-radius: 227px; }
+
+  // ====================================================
+  // == THIS IS THE ONLY THING ADDED, FOR MOBILE ONLY  ==
+  // ====================================================
+  @media (max-width: 768px) {
+    // These styles will make it vertical on phones
+    width: 55vw;
+    height: 49vh;
+    max-width: 420px;
+    max-height: 700px;
+  }
 }
 
 // --- Footer Section ---

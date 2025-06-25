@@ -11,7 +11,7 @@ const VoteCounterLoader: React.FC = () => {
         <div className="vote-counter-loader__dot"></div>
         <div className="vote-counter-loader__dot"></div>
       </div>
-      <p className="vote-counter-loader__text">Contando votos</p>
+      <p className="vote-counter-loader__text">Contando votoss ..</p>
     </div>
   );
 };

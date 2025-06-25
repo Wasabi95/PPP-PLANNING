@@ -16,3 +16,5 @@ const CardPlaceholder: React.FC<CardPlaceholderProps> = ({ hasVoted }) => {
 };
 
 export default CardPlaceholder;
+
+

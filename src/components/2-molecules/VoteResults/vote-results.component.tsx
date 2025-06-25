@@ -39,3 +39,5 @@ const VoteResults: React.FC<VoteResultsProps> = ({ voteCounts, average }) => {
 };
 
 export default VoteResults;
+
+
