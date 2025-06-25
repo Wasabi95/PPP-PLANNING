@@ -1,60 +1,5 @@
 // //src/components/1-atoms/Button/button.component.scss
-// // --- Base Button Styles (Primary Variant) ---
-// .custom-button {
-//   background-color: transparent;
-//   border: 2px solid rgba(255, 255, 255, 0.6);
-//   border-radius: 30px;
-//   padding: 14px 28px;
-//   color: rgba(255, 255, 255, 0.8);
-//   font-size: 16px;
-//   font-weight: 500;
-//   cursor: pointer;
-//   min-width: 200px;
-//   // Remember to add border-color to the transition
-//   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 
-//   &:hover {
-//     // Fill with a subtle background and make the border and text solid white
-//     background-color: rgba(255, 255, 255, 0.1);
-//     border-color: white;
-//     color: white;
-//   }
-// }
-
-// // --- Secondary Variant ---
-// .custom-button--secondary {
-//   background-color: #ffffff;
-//   color: #000000;
-//   font-weight: 600;
-
-//   &:hover {
-//     // Let's use a slightly off-white for a cleaner look than gray
-//     background-color: #777272;
-//   }
-// }
-
-// // --- Tertiary Variant ---
-// .custom-button--tertiary {
-//   background: none;
-  
-//   // FIX 1: Add this line to remove the unwanted border.
-//   border: none;
-  
-//   // FIX 2: Add this line to remove the unwanted circular shape.
-//   border-radius: 0;
-  
-//   padding: 4px;
-//   width: auto;
-//   min-width: unset;
-//   color: rgba(255, 255, 255, 0.7);
-
-//   &:hover {
-//     background: none;
-//     color: white;
-//   }
-// }
-
-// --- Base Button Styles (Primary Variant) ---
 .custom-button {
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.6);
@@ -67,6 +12,7 @@
   min-width: 200px;
   // Remember to add border-color to the transition
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, filter 0.3s ease;
+  
 
   &:hover {
     // Fill with a subtle background and make the border and text solid white
@@ -74,6 +20,28 @@
     border-color: white;
     color: white;
   }
+  
+  // --- Tablet Styles ---
+  @media (max-width: 768px) {
+    // On tablets, we reduce the padding and font size slightly.
+    padding: 12px 24px;
+    font-size: 15px;
+    min-width: 180px; // A slightly smaller min-width
+  }
+
+  // --- Mobile Styles ---
+  @media (max-width: 480px) {
+    // On mobile, we make more significant changes for a comfortable fit.
+    padding: 10px 20px;
+    font-size: 10px;
+    
+    // This is the most important change for responsiveness:
+    // We remove the minimum width, so the button can shrink to fit its content.
+    // Its width will be determined by its text length + its padding.
+    min-width: unset; 
+    //  transform: translateY(40px); 
+  }
+  
 }
 
 // --- Secondary Variant ---

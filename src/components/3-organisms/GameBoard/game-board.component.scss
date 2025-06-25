@@ -40,7 +40,33 @@
   align-items: center;
   gap: 16px;
 }
+// ===============================================
+// == FINAL, CORRECT CODE FOR THE MOBILE HEADER ==
+// ===============================================
+@media (max-width: 768px) {
 
+  // STEP 1: The main header MUST be a positioning anchor.
+  .game-board__header {
+    position: relative;
+    padding: 6px; // Adjust padding for mobile
+  }
+  
+  // STEP 2: We take the ENTIRE right-side group...
+  .game-board__header-right {
+    // ...and lift it out of the normal layout flow.
+    position: absolute;
+    
+    // ...and PIN IT to the top-right corner of the header.
+    top: 50%;
+    right: 16px; // 16px from the right edge.
+    transform: translateY(-10%); // This centers it vertically.
+
+    // STEP 3: NOW we stack the items inside it vertically.
+    flex-direction: column;
+    align-items: center; // Center the button under the avatar
+    gap: 8px; // Space between the avatar and button
+  }
+}
 // --- Main Content Section ---
 .game-board__main-content {
   flex-grow: 1;
@@ -80,8 +106,8 @@
   // ====================================================
   @media (max-width: 768px) {
     // These styles will make it vertical on phones
-    width: 55vw;
-    height: 49vh;
+    width: 45vw;
+    height: 35vh;
     max-width: 420px;
     max-height: 700px;
   }

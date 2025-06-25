@@ -30,5 +30,30 @@ margin: -30px;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  transform: translateY(-10px); 
+  transform: translateY(-10px);
+
+  // Mobile styles (applies to screens ≤ 768px)
+  @media (max-width: 768px) {
+    gap: 6px; // Reduce gap between cards
+    transform: translateY(-5px); // Smaller vertical adjustment
+    
+    // If you're using fixed-width cards, reduce their size too:
+    .card {
+      width: 40px !important; // Adjust as needed
+      height: 60px !important;
+      
+      // If cards have font sizes, reduce them
+      font-size: 0.8rem !important;
+    }
+  }
+
+  // Extra small devices (optional)
+  @media (max-width: 480px) {
+    gap: 4px;
+    
+    .card {
+      width: 35px !important;
+      height: 50px !important;
+    }
+  }
 }

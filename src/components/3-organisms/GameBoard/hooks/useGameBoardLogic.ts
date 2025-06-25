@@ -1,4 +1,6 @@
 // src/components/3-organisms/GameBoard/hooks/useGameBoardLogic.ts
+// src/components/3-organisms/GameBoard/hooks/useGameBoardLogic.ts
+
 import { useState, useMemo, useEffect } from 'react';
 import {
   useRoomState,
@@ -10,7 +12,9 @@ import { type PlayerRole } from '../../../2-molecules/JoinGameForm/join-game-for
 // Types can be moved to a shared types file, e.g., 'src/types/game.ts'
 export type GamePhase = 'VOTING' | 'REVEALING' | 'REVEALED';
 
-interface Player {
+// ✅ --- THE FIX IS HERE ---
+// By adding `export`, you make this interface available to other files.
+export interface Player {
   name: string;
   role: PlayerRole;
   vote?: CardValue;
@@ -30,6 +34,7 @@ interface GameBoardLogic {
   handleNewVote: () => void;
 }
 
+// The hook now correctly uses the exported Player type for its 'player' parameter.
 export const useGameBoardLogic = (gameName: string, player: Player | null): GameBoardLogic => {
   const [roomState, setRoomState] = useRoomState(gameName);
   const [gamePhase, setGamePhase] = useState<GamePhase>('VOTING');
@@ -39,10 +44,8 @@ export const useGameBoardLogic = (gameName: string, player: Player | null): Game
   }, [roomState]);
 
   // --- DERIVED STATE & NULL CHECKS ---
-  // The primary loading check. If this is true, the rest of the logic can't run safely.
   const isLoading = !roomState || !player;
 
-  // These values depend on `roomState` and `player`, so we guard them with the `isLoading` check.
   const isHost = !isLoading && roomState.players.length > 0 && roomState.players[0].name === player.name;
   const canRevealVotes = isHost && roomState.players.length >= 2;
   const currentUserInRoom = !isLoading ? roomState.players.find((p) => p.name === player.name) : undefined;
@@ -50,7 +53,6 @@ export const useGameBoardLogic = (gameName: string, player: Player | null): Game
 
   // --- MEMOIZED CALCULATIONS ---
   const voteResults = useMemo(() => {
-    // We can also use `isLoading` here for a cleaner check.
     if (gamePhase !== 'REVEALED' || isLoading) {
       return { voteCounts: {}, average: '0,0' };
     }
@@ -73,12 +75,10 @@ export const useGameBoardLogic = (gameName: string, player: Player | null): Game
         : '0.0';
 
     return { voteCounts, average: average.replace('.', ',') };
-    // Add `isLoading` to dependency array to ensure recalculation when loading state changes.
   }, [gamePhase, roomState, isLoading]);
 
   // --- HANDLERS ---
   const handleCardSelect = (value: CardValue) => {
-    // Guard clause at the beginning of each handler.
     if (isLoading) return;
     const updatedPlayers = roomState.players.map((p) =>
       p.name === player.name ? { ...p, vote: value } : p
@@ -87,7 +87,6 @@ export const useGameBoardLogic = (gameName: string, player: Player | null): Game
   };
 
   const handleRevealVotes = () => {
-    // No need for a guard here, as the button to call this is only rendered if not loading.
     setGamePhase('REVEALING');
     setTimeout(() => setGamePhase('REVEALED'), 2000);
   };
