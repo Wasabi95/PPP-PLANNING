@@ -1,0 +1,107 @@
+// src/components/3-organisms/GameBoard/game-board.component.scss
+@use '../../../styles/mixins' as *;
+@use '../../../styles/breakpoints' as *;
+
+// --- Main Container ---
+.game-board {
+  @include full-page-gradient;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+}
+.game-board.blurred {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+// --- Header Section ---
+.game-board__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.game-board__title {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.game-board__header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+// --- Main Content Section ---
+.game-board__main-content {
+  flex-grow: 1;
+  // This is the "canvas" for positioning. It MUST NOT be a flex container.
+  position: relative;
+}
+
+// --- Poker Table ---
+.game-board__poker-table {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 90vw;
+height: 16vw;
+max-width: 540px;
+max-height: 341px;
+border: 3px solid rgba(173, 112, 255, 0.4);
+border-radius: 250px;
+box-shadow: 0 0 20px 5px rgba(173, 112, 255, 0.2);
+display: flex;
+justify-content: center;
+align-items: center;
+
+  > * { z-index: 1; }
+  &::before, &::after { content: ''; position: absolute; z-index: 0; }
+  &::before { inset: 15px; border: 2px solid rgba(222, 207, 255, 0.6); border-radius: 235px; }
+  &::after { inset: 23px; border: 1px solid rgba(222, 207, 255, 0.4); border-radius: 227px; }
+}
+
+// --- Footer Section ---
+.game-board__footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: 180px;
+}
+
+// --- Player Seat Positioning (Final, Corrected Version) ---
+
+// This is the GENERIC rule for ALL seats. It reads the --x and --y variables.
+.player-seat-wrapper {
+  position: absolute;
+  // Center of the screen + offset from variables
+  top: calc(50% + var(--y, 0px));
+  left: calc(50% + var(--x, 0px));
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  z-index: 2; // Seats are on layer 2, above the table
+}
+
+// The SPECIFIC rules now ONLY set the --x and --y variables.
+
+// Current user is always at the bottom-center
+.player-seat-wrapper--current-user {
+  --x: 0;
+  --y: 26vh; // 26% of viewport height down from center
+  z-index: 3; // Highlighted user is on top
+}
+
