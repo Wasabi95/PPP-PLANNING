@@ -1,69 +1,152 @@
-# React + TypeScript + Vite
+# Vite + React + TypeScript + Jest + React Testing Library Setup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository provides a step-by-step guide to setting up Jest and React Testing Library in a Vite project with TypeScript. Follow along with the [youtube tutorial](https://www.youtube.com/watch?v=tnCLaxCCKWk&ab_channel=PedroFurquim) I've made
+following the same process
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Make sure you have the following installed:
 
-## Expanding the ESLint configuration
+- Node.js
+- npm (Node Package Manager)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup Guide
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Follow these steps to set up Jest and React Testing Library in your Vite project.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 1. Install Jest and TypeScript Types
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+First, install Jest and its TypeScript types:
+
+```bash
+npm install --save-dev jest @types/jest
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Add Test Script
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Add the following "test" script to your package.json file:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+"scripts": {
+  "test": "jest",
+  "test:cov": "jest --coverage --watchAll"
+}
+```
+
+### 3. Install React Testing Library
+
+Install React Testing Library and its dependencies:
+
+```
+npm install --save-dev @testing-library/react
+npm install --save-dev @testing-library/jest-dom
+npm install --save-dev @testing-library/user-event
+```
+
+### 4. Install Babel and Other Dependencies
+
+Install Babel and other necessary dependencies:
+
+```
+npm install --save-dev @babel/core
+npm install --save-dev @babel/preset-env
+npm install --save-dev @babel/preset-react
+npm install --save-dev @babel/preset-typescript
+npm install --save-dev babel-jest
+npm install --save-dev identity-obj-proxy
+npm install --save-dev jest-environment-jsdom
+```
+
+### 5. Configure Jest
+
+Add the following Jest configuration to your package.json file:
+
+```
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-test.ts"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*.{spec,test}.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/dist/**",
+      "!**/build/**",
+      "!vite.config.ts",
+      "!**/coverage/**"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "setup-tests.ts",
+      "vite-env.d.ts"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  }
+```
+
+### 6. Create Setup File
+
+Create a file named setup-test.ts in the root of your project and add the following code:
+
+```
+import '@testing-library/jest-dom';
+```
+
+### 7. Create Babel Configuration
+
+Create a file named babel.config.cjs in the root of your project and add the following code:
+
+```
+module.exports = {
+  presets: [
+    ['@babel/preset-env', { targets: { esmodules: true } }],
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    '@babel/preset-typescript',
+  ]
+};
+```
+
+### 8. Create Mocks for Static Assets
+
+Create a folder named __mocks__ inside the src directory and add a file named fileMock.js with the following content:
+
+```
+module.exports = 'test-file-stub';
+```
+
+### 9. Update .gitignore
+
+Add the following line to your .gitignore file to ignore coverage reports:
+
+```
+coverage
+```
+
+### 10. Install ts-jest and ts-node
+
+Install ts-jest and ts-node to enable TypeScript support in Jest:
+
+```
+npm install --save-dev ts-jest ts-node
+```
+
+### Running Tests
+
+To run the tests, use the following command:
+
+```
+npm run test:cov
+```
+
+### Conclusion
+
+You have now set up Jest and React Testing Library in your Vite project with TypeScript. Happy testing!
