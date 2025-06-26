@@ -2,6 +2,15 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/breakpoints' as *;
 
+// Add this inside your .game-board__header-right class
+.game-board__user-avatar.is-owner {
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    box-shadow: 0 0 10px #8c52ff;
+  }
+}
+
 // --- Main Container ---
 .game-board {
   @include full-page-gradient;

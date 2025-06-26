@@ -72,4 +72,3 @@ const JoinGameForm: React.FC<JoinGameFormProps> = ({ onJoinSuccess }) => {
 
 export default JoinGameForm;
 
-

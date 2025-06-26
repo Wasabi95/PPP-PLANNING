@@ -31,3 +31,4 @@ const GameBoardHeader: React.FC<GameBoardHeaderProps> = ({ gameName, playerName,
 );
 
 export default GameBoardHeader;
+

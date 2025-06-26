@@ -7,12 +7,18 @@ type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'cta';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
+// src/components/1-atoms/Button/button.component.tsx
+// ... imports
+
 const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
   className,
   ...props
 }) => {
+  // ADD THIS LINE FOR DEBUGGING
+  console.log('--- RENDERING THE CORRECT BUTTON COMPONENT ---', props);
+
   const buttonClassName = `
     custom-button
     custom-button--${variant}

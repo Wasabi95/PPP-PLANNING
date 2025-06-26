@@ -85,5 +85,3 @@ const GameBoard: React.FC<GameBoardProps> = ({ player, gameName }) => {
 };
 
 export default GameBoard;
-
-

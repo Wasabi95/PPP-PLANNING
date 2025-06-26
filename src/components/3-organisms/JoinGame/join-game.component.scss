@@ -61,7 +61,7 @@
 // --- Footer ---
 .join-game__footer {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   left: 0;
   right: 0;
   display: flex;
@@ -79,7 +79,8 @@
 .join-game__card-placeholders {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 8px;
+   margin-top: 20px; 
 }
 .join-game__card-placeholder {
   display: flex;
@@ -97,6 +98,7 @@
 }
 
 // --- Focused Modal Container (Sits on top of everything) ---
+// --- Focused Modal Container (Sits on top of everything) ---
 .join-game__modal-container {
   position: absolute;
   top: 0;
@@ -106,23 +108,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 15px; // Reduced padding
   box-sizing: border-box;
 
   // Styles for the glowing form container itself
   & > * {
     background-color: rgba(21, 9, 44, 0.6);
-    padding: 30px;
+    padding: 25px; // Reduced padding
     border-radius: 20px;
     border: 1px solid rgba(173, 112, 255, 0.4);
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 15px 2px rgba(173, 112, 255, 0.3),
-      0 0 40px 10px rgba(173, 112, 255, 0.15);
-    width: 100%;
-    max-width: 450px;
+    box-shadow: 0 0 12px 1px rgba(173, 112, 255, 0.3), // Slightly tighter shadow
+      0 0 30px 8px rgba(173, 112, 255, 0.15);
+    width: 90%;
+   
+    max-width: 310px; // Reduced max-width
 
     @media (min-width: $breakpoint-tablet) {
-      padding: 40px 60px;
+      padding: 30px 45px; // Reduced tablet/desktop padding
     }
   }
 }

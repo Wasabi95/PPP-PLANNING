@@ -43,6 +43,7 @@ const PlayerSeat: React.FC<PlayerSeatProps> = ({
   else {
     cardAreaContent = (
       <div
+      data-testid="card-placeholder"
         className={`card-placeholder ${
           hasVoted ? 'card-placeholder--voted' : ''
         }`}

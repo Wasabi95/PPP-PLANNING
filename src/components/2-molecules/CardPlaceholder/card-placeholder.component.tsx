@@ -9,12 +9,19 @@ interface CardPlaceholderProps {
 
 const CardPlaceholder: React.FC<CardPlaceholderProps> = ({ hasVoted }) => {
   return (
-    <div className={`card-placeholder ${hasVoted ? 'card-placeholder--voted' : ''}`}>
-      {hasVoted && <div className="card-placeholder__vote-indicator"></div>}
+    <div
+      data-testid="card-placeholder" // <-- ADD THIS
+      className={`card-placeholder ${hasVoted ? 'card-placeholder--voted' : ''}`}
+    >
+      {hasVoted && (
+        <div
+          data-testid="card-placeholder-vote-indicator" // <-- AND THIS
+          className="card-placeholder__vote-indicator"
+        ></div>
+      )}
     </div>
   );
 };
 
 export default CardPlaceholder;
-
 
