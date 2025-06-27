@@ -128,12 +128,7 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -145,38 +140,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,6 +176,7 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
@@ -208,17 +198,17 @@ import React from 'react';
 import { type CardValue } from '../../../hooks/useRoomState';
 import './voting-card.component.scss';
 &nbsp;
+// --- FIX 1: Make 'onClick' optional and specify it passes the value back up ---
 interface VotingCardProps {
   value: CardValue;
   isSelected: boolean;
   onClick?: (value: CardValue) =&gt; void;
+  
 }
 &nbsp;
 // Simple SVG icons as React components
 const CoffeeIcon = () =&gt; (
-  // --- FIX: data-testid goes INSIDE the &lt;svg&gt; tag ---
   &lt;svg
-    data-testid="coffee-icon"
     className="icon"
     viewBox="0 0 24 24"
     fill="currentColor"
@@ -230,14 +220,7 @@ const CoffeeIcon = () =&gt; (
 &nbsp;
 &nbsp;
 const InfinityIcon = <span class="fstat-no" title="function not covered" >() =</span>&gt; (
-  // --- FIX: data-testid goes INSIDE the &lt;svg&gt; tag ---
-<span class="cstat-no" title="statement not covered" >  &lt;svg</span>
-    data-testid="infinity-icon"
-    className="icon"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-  &gt;
+<span class="cstat-no" title="statement not covered" >  &lt;svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"&gt;</span>
     {/* SVG path data */}
   &lt;/svg&gt;
 );
@@ -247,6 +230,7 @@ const VotingCard: React.FC&lt;VotingCardProps&gt; = ({
   isSelected,
   onClick,
 }) =&gt; {
+  // --- FIX 2: Add a class when the card is not clickable for styling ---
   const cardClassName = `
     voting-card
     ${isSelected ? 'voting-card--selected' : ''}
@@ -259,15 +243,16 @@ const VotingCard: React.FC&lt;VotingCardProps&gt; = ({
     return value;
   };
 &nbsp;
+  // --- FIX 3: Safely call onClick only if it exists ---
   const handleClick = () =&gt; {
     if (onClick) {
       onClick(value);
     }
   };
 &nbsp;
-  // --- FIX: Add a data-testid to the main wrapper for easier selection in tests ---
+  // --- FIX 4: Use a 'div' for better semantics, as it's not always a button ---
   return (
-    &lt;div data-testid="voting-card-wrapper" className={cardClassName} onClick={handleClick}&gt;
+    &lt;div className={cardClassName} onClick={handleClick}&gt;
       &lt;span className="voting-card__value"&gt;{renderValue()}&lt;/span&gt;
     &lt;/div&gt;
   );
@@ -280,7 +265,7 @@ export default VotingCard;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-26T22:50:28.058Z
+                at 2025-06-27T10:54:16.630Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

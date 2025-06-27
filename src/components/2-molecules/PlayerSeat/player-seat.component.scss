@@ -1,4 +1,7 @@
 // src/components/2-molecules/PlayerSeat/player-seat.component.scss
+// src/components/2-molecules/PlayerSeat/player-seat.component.scss
+// src/components/2-molecules/PlayerSeat/player-seat.component.scss
+
 .player-seat {
   display: flex;
   flex-direction: column;
@@ -7,6 +10,37 @@
   &__name {
     color: white;
     font-size: 10px;
+    // NEW: Add display flex and gap to align the name and icon
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    // NEW: Add styles for the crown icon
+    .revealer-icon {
+      color: gold;
+      font-size: 0.8rem; // Sized relative to the small name font-size
+      line-height: 1;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); // Adds a subtle shadow
+    }
+  }
+
+  // NEW: Add styles for when this seat belongs to the revealer
+  &.is-revealer-highlight {
+    .player-seat__name {
+      // Makes the revealer's name stand out
+      font-weight: bold;
+      color: #fde047; // A gold/yellow color to match the crown
+    }
+  }
+
+  &.is-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-4px); // Lift the seat slightly on hover
+      filter: brightness(1.15);   // Make it slightly brighter
+    }
   }
 }
 
@@ -58,8 +92,8 @@
   display: flex;
   align-items: center;
   justify-content: center;  
-  // height: 60px; 
 }
+
 .player-seat--voting .player-seat__revealed-card {
   display: none !important;
   border: none !important; // Kills the border

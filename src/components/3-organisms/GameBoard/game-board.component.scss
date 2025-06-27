@@ -10,6 +10,22 @@
     box-shadow: 0 0 10px #8c52ff;
   }
 }
+.game-board__header-right {
+  // ... your existing styles
+  
+  // NEW: Styles for the avatar container
+  .game-board__avatar-container {
+    &.clickable {
+      cursor: pointer;
+      border-radius: 50%;
+      transition: box-shadow 0.2s ease;
+      
+      &:hover {
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); // Example hover effect
+      }
+    }
+  }
+}
 
 // --- Main Container ---
 .game-board {
